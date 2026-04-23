@@ -1,16 +1,10 @@
 # **BÀI TẬP**: [ Chuyên sâu ] Trích xuất Dữ liệu Khách hàng "Ngủ đông"
 
-- Phân tích bài toán (I/O):
-  Input: Dữ liệu khách hàng từ bảng CUSTOMERS, bao gồm các cột như Tên, Email, Địa chỉ, Ngày mua cuối, và Status.
-  Output: Danh sách Tên và Email của khách hàng ở Hà Nội, đã không mua hàng hơn 6 tháng (tính từ 01/04/2026 về trước), và không bị khóa tài khoản.
-  Việc sử dụng lệnh SELECT \* sẽ là một sai lầm vì nó sẽ truy xuất tất cả các cột của bảng, gây ra lượng dữ liệu lớn không cần thiết, làm tăng thời gian truy vấn và gây nghẽn cổ chai hệ thống, đặc biệt khi bảng chứa hàng triệu bản ghi.
-- Thiết kế giải pháp:
-  Điều kiện lọc dữ liệu sẽ bao gồm:
+- Phân tích bài toán (I/O): Input cần quét ở bảng CUSTOMERS, output cần trả ra các cột FullName và Email. Việc sử dụng lệnh SELECT \* sẽ làm nghẽn cổ chai hệ thống vì nó sẽ truy xuất tất cả các cột (hàng chục cột) của hàng triệu bản ghi, gây tốn tài nguyên và thời gian xử lý không cần thiết, trong khi chỉ cần 2 cột là FullName và Email.
+- Thiết kế giải pháp: Logic lọc dữ liệu sẽ bao gồm các điều kiện sau trong mệnh đề WHERE:
+  1. City = 'Hà Nội' (chỉ lấy khách hàng ở Hà Nội)
+  2. LastPurchaseDate < '2025-10-01' (chỉ lấy khách hàng đã không mua hàng hơn 6 tháng, tính từ ngày 01/04/2026)
+  3. Email IS NOT NULL (loại bỏ khách hàng không có email)
+  4. Status != 'Locked' (loại bỏ khách hàng có tài khoản bị khóa)
 
-1. Địa chỉ chứa "Hà Nội" để xác định khách hàng ở Hà Nội.
-2. Ngày mua cuối phải nhỏ hơn ngày 01/04/2026 để xác định khách hàng đã không mua hàng hơn 6 tháng.
-3. Email không được NULL để đảm bảo có địa chỉ email để gửi thư.
-4. Status không được 'Locked' để loại bỏ những tài khoản bị khóa.
-
-- Triển khai code: [SQL](query.sql)
-- Câu lệnh SQL trên sẽ trả về danh sách Tên và Email của khách hàng ở Hà Nội, đã không mua hàng hơn 6 tháng, có email hợp lệ và tài khoản không bị khóa, đáp ứng đúng yêu cầu của Sếp.
+- Câu lệnh SQL sẽ được xây dựng như sau: [SQL](query.sql)
