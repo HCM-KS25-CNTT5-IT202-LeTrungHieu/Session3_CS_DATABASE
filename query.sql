@@ -1,6 +1,6 @@
-SELECT Name, Email
+SELECT FullName, Email
 FROM CUSTOMERS
-WHERE Address LIKE '%Hà Nội%'
-AND LastPurchaseDate < '2026-04-01'
+WHERE City = 'Hà Nội'
+AND LastPurchaseDate < '2025-10-01'
 AND Email IS NOT NULL
 AND Status != 'Locked';
